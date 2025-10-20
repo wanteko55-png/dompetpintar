@@ -1,5 +1,5 @@
 // main.js minimal client
-const GAS_URL = '<REPLACE_WITH_GAS_WEBAPP_URL>'; // <<< REPLACE with deployed GAS webapp URL
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbz_zRMfgqXzhe3Yxivq3FxfNZev6Ne6DfVhTsxT_hX-5Ty0uc2sp7FycbEiQPeHX8B_XA/exec'; // <<< REPLACE with deployed GAS webapp URL
 document.getElementById('btn-login').addEventListener('click', ()=> location.href='/login.html');
 document.getElementById('btn-register').addEventListener('click', ()=> location.href='/register.html');
 document.getElementById('btn-dashboard').addEventListener('click', ()=> location.href='/');

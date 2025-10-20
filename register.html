@@ -1,30 +1,111 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Aktivasi - Dompet Pintar</title><link rel="stylesheet" href="css/style.css"></head><body>
-<div class="app"><div class="card" style="max-width:520px;margin:60px auto;padding:20px;">
-  <h3>Aktivasi Akun</h3>
-  <form id="regForm">
-    <label>UserID (Kode Unik)</label><input id="userId" required>
-    <label>Email (opsional)</label><input id="email" type="email">
-    <label>Username</label><input id="username" required>
-    <label>Password</label><input id="password" type="password" required>
-    <label>Konfirmasi Password</label><input id="password2" type="password" required>
-    <div style="margin-top:12px"><button class="btn" type="submit">Aktivasi</button></div>
-    <div id="regMsg" style="margin-top:10px;color:#ef4444"></div>
-  </form>
-</div></div>
-<script>
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbz_zRMfgqXzhe3Yxivq3FxfNZev6Ne6DfVhTsxT_hX-5Ty0uc2sp7FycbEiQPeHX8B_XA/exec';
-document.getElementById('regForm').addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const userId = document.getElementById('userId').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value;
-  const password2 = document.getElementById('password2').value;
-  if(password !== password2){ document.getElementById('regMsg').innerText='Password tidak cocok'; return;}
-  const res = await fetch(GAS_URL, {method:'POST', body: JSON.stringify({action:'activate', userId, email, username, password})});
-  const j = await res.json();
-  if(j.success){ alert('Aktivasi sukses. Silakan login.'); location.href='/login.html'; }
-  else document.getElementById('regMsg').innerText = j.message || 'Gagal';
-});
-</script>
-</body></html>
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Aktivasi - Dompet Pintar</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .msg { margin-top:10px; font-size:14px; }
+    .msg.error { color:#dc2626; }
+    .msg.success { color:#16a34a; }
+    .loading { color:#2563eb; }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="card" style="max-width:520px;margin:60px auto;padding:20px;">
+      <h3>Aktivasi Akun</h3>
+      <form id="regForm">
+        <label>UserID (Kode Unik)</label>
+        <input id="userId" required>
+
+        <label>Email (opsional)</label>
+        <input id="email" type="email">
+
+        <label>Username</label>
+        <input id="username" required>
+
+        <label>Password</label>
+        <input id="password" type="password" required>
+
+        <label>Konfirmasi Password</label>
+        <input id="password2" type="password" required>
+
+        <div style="margin-top:12px">
+          <button class="btn" type="submit" id="btnSubmit">Aktivasi</button>
+        </div>
+        <div id="regMsg" class="msg"></div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbz_zRMfgqXzhe3Yxivq3FxfNZev6Ne6DfVhTsxT_hX-5Ty0uc2sp7FycbEiQPeHX8B_XA/exec';
+    const form = document.getElementById('regForm');
+    const msgBox = document.getElementById('regMsg');
+    const btn = document.getElementById('btnSubmit');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msgBox.innerText = '';
+      msgBox.className = 'msg loading';
+      msgBox.innerText = 'Memproses... mohon tunggu.';
+      btn.disabled = true;
+
+      const userId = document.getElementById('userId').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const password2 = document.getElementById('password2').value;
+
+      if (password !== password2) {
+        msgBox.innerText = '⚠️ Password tidak cocok.';
+        msgBox.className = 'msg error';
+        btn.disabled = false;
+        return;
+      }
+
+      try {
+        const res = await fetch(GAS_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'activate', userId, email, username, password })
+        });
+
+        // Jika response gagal total
+        if (!res.ok) throw new Error('Gagal menghubungi server.');
+
+        const j = await res.json();
+        console.log('RESPON:', j); // untuk debug
+
+        if (j.success) {
+          msgBox.innerText = '✅ Aktivasi sukses! Mengalihkan ke halaman login...';
+          msgBox.className = 'msg success';
+          setTimeout(() => location.href = '/login.html', 2000);
+        } else {
+          msgBox.innerText = '❌ ' + (j.message || 'Aktivasi gagal.');
+          msgBox.className = 'msg error';
+        }
+      } catch (err) {
+        console.error('ERR:', err);
+        msgBox.innerText = '🚫 Gagal terhubung ke server: ' + err.message;
+        msgBox.className = 'msg error';
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    // Tes koneksi otomatis
+    window.addEventListener('load', async () => {
+      try {
+        const ping = await fetch(GAS_URL);
+        if (ping.ok) console.log('✅ Koneksi ke Apps Script OK');
+        else console.warn('⚠️ Tidak bisa mengakses Apps Script.');
+      } catch {
+        console.warn('⚠️ Apps Script unreachable (CORS atau jaringan).');
+      }
+    });
+  </script>
+</body>
+</html>

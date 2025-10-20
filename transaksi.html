@@ -2,7 +2,7 @@
 <div class="app"><div class="card" style="max-width:900px;margin:24px auto"><h3>Transaksi</h3>
 <div id="txList"></div></div></div>
 <script>
-const GAS_URL = '<REPLACE_WITH_GAS_WEBAPP_URL>';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbz_zRMfgqXzhe3Yxivq3FxfNZev6Ne6DfVhTsxT_hX-5Ty0uc2sp7FycbEiQPeHX8B_XA/exec';
 async function load(){
   const s = localStorage.getItem('dp_session'); if(!s){ alert('Login dulu'); location.href='/login.html'; return; }
   const user = JSON.parse(s);

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dompet Pintar</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app" id="app">
+    <header class="header card">
+      <div class="brand">
+        <div class="logo">DP</div>
+        <div>
+          <div class="title">Dompet Pintar</div>
+          <div class="subtitle">Personal Finance Tracker</div>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="btn-dashboard">Dashboard</button>
+        <button class="btn ghost" id="btn-login">Login</button>
+        <button class="btn secondary" id="btn-register">Aktivasi</button>
+      </div>
+    </header>
+
+    <main id="main" class="grid">
+      <section class="col-8 card" id="dashboardCard">
+        <h3>Dashboard</h3>
+        <div class="kpi-grid" id="kpiGrid">
+          <div class="kpi"><div class="val" id="saldoVal">-</div><div class="lbl">Saldo</div></div>
+          <div class="kpi"><div class="val" id="incomeVal">-</div><div class="lbl">Pemasukan Bulan</div></div>
+          <div class="kpi"><div class="val" id="expenseVal">-</div><div class="lbl">Pengeluaran Bulan</div></div>
+          <div class="kpi"><div class="val" id="budgetVal">-</div><div class="lbl">Sisa Budget</div></div>
+        </div>
+        <div class="card" style="margin-top:12px">
+          <h4>Riwayat Transaksi</h4>
+          <table id="txTable"><thead><tr><th>Tgl</th><th>Deskripsi</th><th>Kategori</th><th>Nominal</th></tr></thead><tbody></tbody></table>
+        </div>
+      </section>
+
+      <aside class="col-4 card" id="sideCard">
+        <h4>Quick Actions</h4>
+        <button class="btn" id="btn-add-tx">Tambah Transaksi</button>
+        <button class="btn ghost" id="btn-budget">Budget</button>
+        <button class="btn ghost" id="btn-cicilan">Cicilan</button>
+        <button class="btn ghost" id="btn-tabungan">Tabungan</button>
+        <hr/>
+        <div id="userBox">Belum login</div>
+      </aside>
+    </main>
+
+    <footer style="text-align:center;margin-top:28px;color:#6b7280">Powered by Dompet Pintar</footer>
+  </div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

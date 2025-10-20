@@ -1,0 +1,1 @@
+Assets folder. Place logo.png and icons here.

@@ -1,0 +1,30 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Aktivasi - Dompet Pintar</title><link rel="stylesheet" href="css/style.css"></head><body>
+<div class="app"><div class="card" style="max-width:520px;margin:60px auto;padding:20px;">
+  <h3>Aktivasi Akun</h3>
+  <form id="regForm">
+    <label>UserID (Kode Unik)</label><input id="userId" required>
+    <label>Email (opsional)</label><input id="email" type="email">
+    <label>Username</label><input id="username" required>
+    <label>Password</label><input id="password" type="password" required>
+    <label>Konfirmasi Password</label><input id="password2" type="password" required>
+    <div style="margin-top:12px"><button class="btn" type="submit">Aktivasi</button></div>
+    <div id="regMsg" style="margin-top:10px;color:#ef4444"></div>
+  </form>
+</div></div>
+<script>
+const GAS_URL = '<REPLACE_WITH_GAS_WEBAPP_URL>';
+document.getElementById('regForm').addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const userId = document.getElementById('userId').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const username = document.getElementById('username').value.trim();
+  const password = document.getElementById('password').value;
+  const password2 = document.getElementById('password2').value;
+  if(password !== password2){ document.getElementById('regMsg').innerText='Password tidak cocok'; return;}
+  const res = await fetch(GAS_URL, {method:'POST', body: JSON.stringify({action:'activate', userId, email, username, password})});
+  const j = await res.json();
+  if(j.success){ alert('Aktivasi sukses. Silakan login.'); location.href='/login.html'; }
+  else document.getElementById('regMsg').innerText = j.message || 'Gagal';
+});
+</script>
+</body></html>
